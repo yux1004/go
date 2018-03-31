@@ -5,11 +5,12 @@ import (
 	"net/http"
 	"encoding/json"
 	"log"
-    "strconv"
-    elastic "gopkg.in/olivere/elastic.v3"
-    "github.com/pborman/uuid"
-    "reflect"
-    "strings"
+  "strconv"
+  elastic "gopkg.in/olivere/elastic.v3"
+  "github.com/pborman/uuid"
+  "reflect"
+  "context"
+  "cloud.google.com/go/bigtable"
 
 )
 /*
@@ -119,7 +120,7 @@ func handlerPost(w http.ResponseWriter, r *http.Request) {
       saveToES(&p, id)
 
       // for big table
-            ctx := context.Background()
+      ctx := context.Background()
       // you must update project name here
       bt_client, err := bigtable.NewClient(ctx, PROJECT_ID, BT_INSTANCE)
       if err != nil {
@@ -128,6 +129,7 @@ func handlerPost(w http.ResponseWriter, r *http.Request) {
       }
 
       // TODO (student questions) save Post into BT as well
+      
       tbl := bt_client.Open("post")
       mut := bigtable.NewMutation()
       t := bigtable.Now()
